@@ -21,15 +21,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    __weak __typeof__(self) weakSelf = self;
     UCRefreshHeaderView *refreshHeaderView = [UCRefreshHeaderView headerWithRefreshingBlock:^{
-        dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 2ull *NSEC_PER_SEC);
 
+        dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 2ull *NSEC_PER_SEC);
         dispatch_after(time, dispatch_get_main_queue(), ^{
             //执行操作
             NSLog(@"获取数据成功");
-            [self.tableView.ucRefreshHeader endRefreshing];
+            [weakSelf.tableView.ucRefreshHeader endRefreshing];
         });
     }];
+
     self.tableView.ucRefreshHeader = refreshHeaderView;
 
 }
